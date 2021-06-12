@@ -29,13 +29,7 @@ namespace Estetika.Implementation.Commands
 
         public void Execute(RoleDto request)
         {
-            //validator.ValidateAndThrow(request);
-
-            var result = validator.Validate(request);
-            if (!result.IsValid)
-            {
-                throw new ArgumentException(result.ToString());
-            }
+            validator.ValidateAndThrow(request);
 
             var role = new Role
             {

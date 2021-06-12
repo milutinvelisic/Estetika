@@ -29,7 +29,7 @@ namespace Estetika.Api.Core
                 httpContext.Response.ContentType = "application/json";
                 object response = null;
                 var statusCode = StatusCodes.Status500InternalServerError;
-
+               
                 switch (ex)
                 {
                     case UnauthorizedUseCaseException _:
@@ -47,12 +47,16 @@ namespace Estetika.Api.Core
                             message = "Resource not found"
                         };
                         break;
-                    case ValidationException validationException:
+                    case FluentValidation.ValidationException validationException:
                         statusCode = StatusCodes.Status422UnprocessableEntity;
                         response = new
                         {
-                            message = "There was an error with your roleName!",
-                            errors = validationException.ValidationResult.ErrorMessage
+                            message = "There was an error while inserting!",
+                            errors = validationException.Errors.Select(x => new
+                            {
+                                x.PropertyName,
+                                x.ErrorMessage
+                            })
                         };
                         break;
                     case ArgumentException msg:
