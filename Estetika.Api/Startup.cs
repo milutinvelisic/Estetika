@@ -1,3 +1,9 @@
+using Estetika.Api.Core;
+using Estetika.Application;
+using Estetika.Application.Commands;
+using Estetika.DataAccess;
+using Estetika.Implementation.Commands;
+using Estetika.Implementation.Validators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +31,12 @@ namespace Estetika.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddTransient<EstetikaContext>();
+            services.AddTransient<ICreateRoleCommand, EfCreateRoleCommand>();
+            services.AddTransient<IDeleteRoleCommand, EfDeleteRoleCommand>();
+            services.AddTransient<IApplicationActor, AdminFakeApiActor>();
+            services.AddTransient<UseCaseExecutor>();
+            services.AddTransient<CreateRoleValidator>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -44,6 +55,8 @@ namespace Estetika.Api
             }
 
             app.UseRouting();
+
+            app.UseMiddleware<GlobalExceptionHandler>();
 
             app.UseAuthorization();
 

@@ -1,4 +1,8 @@
-﻿using Estetika.DataAccess;
+﻿using Estetika.Application;
+using Estetika.Application.Commands;
+using Estetika.Application.DataTransfer;
+using Estetika.Application.Exceptions;
+using Estetika.DataAccess;
 using Estetika.Domain;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,19 +20,25 @@ namespace Estetika.Api.Controllers
     {
 
         private readonly EstetikaContext _estetikaContext;
+        private readonly IApplicationActor actor;
+        private readonly UseCaseExecutor executor;
 
-        public RolesController()
+        public RolesController(EstetikaContext estetikaContext, IApplicationActor actor, UseCaseExecutor executor)
         {
-            _estetikaContext = new EstetikaContext();
+            _estetikaContext = estetikaContext;
+            this.actor = actor;
+            this.executor = executor;
         }
+
 
         // GET: api/<RolesController>
         [HttpGet]
         public IActionResult Get()
         {
-            var roles = _estetikaContext.Roles.ToList();
+            return Ok(actor);
+            //var roles = _estetikaContext.Roles.ToList();
 
-            return Ok(roles);
+            //return Ok(roles);
         }
 
         // GET api/<RolesController>/5
@@ -40,16 +50,19 @@ namespace Estetika.Api.Controllers
 
         // POST api/<RolesController>
         [HttpPost]
-        public void Post([FromBody] RolesDto dto)
+        public void Post([FromBody] RoleDto dto, [FromServices] ICreateRoleCommand command)
         {
-            var role = new Role
-            {
-                RoleName = dto.RoleName
-            };
 
-            _estetikaContext.Roles.Add(role);
+            executor.ExecuteCommand(command, dto);
 
-            _estetikaContext.SaveChanges();
+            //var role = new Role
+            //{
+            //    RoleName = dto.RoleName
+            //};
+
+            //_estetikaContext.Roles.Add(role);
+
+            //_estetikaContext.SaveChanges();
         }
 
         // PUT api/<RolesController>/5
@@ -78,27 +91,30 @@ namespace Estetika.Api.Controllers
 
         // DELETE api/<RolesController>/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id, [FromServices] IDeleteRoleCommand command)
         {
-            var role = _estetikaContext.Roles.Find(id);
+            executor.ExecuteCommand(command, id);
+            return NoContent();
 
-            if (role == null)
-            {
-                return NotFound();
-            }
+            //var role = _estetikaContext.Roles.Find(id);
 
-            try
-            {
-                role.IsDeleted = true;
+            //if (role == null)
+            //{
+            //    return NotFound();
+            //}
 
-                _estetikaContext.SaveChanges();
+            //try
+            //{
+            //    role.IsDeleted = true;
 
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500);
-            }
+            //    _estetikaContext.SaveChanges();
+
+            //    return NoContent();
+            //}
+            //catch (Exception ex)
+            //{
+            //    return StatusCode(500);
+            //}
         }
     }
 
