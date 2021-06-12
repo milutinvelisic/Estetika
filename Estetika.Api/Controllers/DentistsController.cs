@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Estetika.Application;
+using Estetika.Application.Commands;
+using Estetika.Application.DataTransfer;
+using Estetika.DataAccess;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +16,17 @@ namespace Estetika.Api.Controllers
     [ApiController]
     public class DentistsController : ControllerBase
     {
+        private readonly EstetikaContext context;
+        private readonly IApplicationActor actor;
+        private readonly UseCaseExecutor executor;
+
+        public DentistsController(EstetikaContext context, IApplicationActor actor, UseCaseExecutor executor)
+        {
+            this.context = context;
+            this.actor = actor;
+            this.executor = executor;
+        }
+
         // GET: api/<DentistsController>
         [HttpGet]
         public IActionResult Get()
@@ -28,20 +43,27 @@ namespace Estetika.Api.Controllers
 
         // POST api/<DentistsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] DentistDto dto, [FromServices] ICreateDentistCommand command)
         {
+            executor.ExecuteCommand(command, dto);
+            return NoContent();
         }
 
         // PUT api/<DentistsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] DentistDto dto, [FromServices] IUpdateDentistCommand command)
         {
+            dto.Id = id;
+            executor.ExecuteCommand(command, dto);
+            return NoContent();
         }
 
         // DELETE api/<DentistsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id, [FromServices] IDeleteDentistCommand command)
         {
+            executor.ExecuteCommand(command, id);
+            return NoContent();
         }
     }
 }

@@ -32,13 +32,28 @@ namespace Estetika.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<EstetikaContext>();
+
             services.AddTransient<ICreateRoleCommand, EfCreateRoleCommand>();
+            services.AddTransient<ICreateDentistCommand, EfCreateDentistCommand>();
+
             services.AddTransient<IDeleteRoleCommand, EfDeleteRoleCommand>();
+            services.AddTransient<IDeleteDentistCommand, EfDeleteDentistCommand>();
+
             services.AddTransient<IUpdateRoleCommand, EfUpdateRoleCommand>();
+            services.AddTransient<IUpdateDentistCommand, EfUpdateDentistCommand>();
+
+
             services.AddTransient<IApplicationActor, AdminFakeApiActor>();
+
             services.AddTransient<UseCaseExecutor>();
+
+
             services.AddTransient<CreateRoleValidator>();
+            services.AddTransient<CreateDentistValidator>();
+
             services.AddTransient<UpdateRoleValidator>();
+            services.AddTransient<UpdateDentistValidator>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
