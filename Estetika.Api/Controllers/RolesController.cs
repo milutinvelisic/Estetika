@@ -50,43 +50,19 @@ namespace Estetika.Api.Controllers
 
         // POST api/<RolesController>
         [HttpPost]
-        public void Post([FromBody] RoleDto dto, [FromServices] ICreateRoleCommand command)
+        public IActionResult Post([FromBody] RoleDto dto, [FromServices] ICreateRoleCommand command)
         {
-
             executor.ExecuteCommand(command, dto);
-
-            //var role = new Role
-            //{
-            //    RoleName = dto.RoleName
-            //};
-
-            //_estetikaContext.Roles.Add(role);
-
-            //_estetikaContext.SaveChanges();
+            return NoContent();
         }
 
         // PUT api/<RolesController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] RolesDto dto)
+        public IActionResult Put(int id, [FromBody] RoleDto dto, [FromServices] IUpdateRoleCommand command)
         {
-            var role = _estetikaContext.Roles.Find(id);
-
-            if(role == null)
-            {
-                return NotFound();
-            }
-
-            role.RoleName = dto.RoleName;
-
-            try
-            {
-                _estetikaContext.SaveChanges();
-                return NoContent();
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(500);
-            }
+            dto.Id = id;
+            executor.ExecuteCommand(command, dto);
+            return NoContent();
         }
 
         // DELETE api/<RolesController>/5
@@ -96,30 +72,7 @@ namespace Estetika.Api.Controllers
             executor.ExecuteCommand(command, id);
             return NoContent();
 
-            //var role = _estetikaContext.Roles.Find(id);
-
-            //if (role == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //try
-            //{
-            //    role.IsDeleted = true;
-
-            //    _estetikaContext.SaveChanges();
-
-            //    return NoContent();
-            //}
-            //catch (Exception ex)
-            //{
-            //    return StatusCode(500);
-            //}
         }
     }
 
-    public class RolesDto
-    {
-        public string RoleName { get; set; }
-    }
 }

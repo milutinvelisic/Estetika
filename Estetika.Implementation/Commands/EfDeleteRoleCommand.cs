@@ -31,7 +31,10 @@ namespace Estetika.Implementation.Commands
                 throw new EntityNotFoundException(request, typeof(Role));
             }
 
-            _context.Roles.Remove(role);
+            role.DeletedAt = DateTime.Now;
+            role.IsDeleted = true;
+            role.IsActive = false;
+
             _context.SaveChanges();
 
         }

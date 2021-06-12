@@ -34,9 +34,11 @@ namespace Estetika.Api
             services.AddTransient<EstetikaContext>();
             services.AddTransient<ICreateRoleCommand, EfCreateRoleCommand>();
             services.AddTransient<IDeleteRoleCommand, EfDeleteRoleCommand>();
+            services.AddTransient<IUpdateRoleCommand, EfUpdateRoleCommand>();
             services.AddTransient<IApplicationActor, AdminFakeApiActor>();
             services.AddTransient<UseCaseExecutor>();
             services.AddTransient<CreateRoleValidator>();
+            services.AddTransient<UpdateRoleValidator>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

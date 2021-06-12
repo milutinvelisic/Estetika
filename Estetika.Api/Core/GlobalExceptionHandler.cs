@@ -1,5 +1,6 @@
 ﻿using Estetika.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,13 @@ namespace Estetika.Api.Core
                         response = new
                         {
                             message = msg.Message.ToString()
+                        };
+                        break;
+                    case DbUpdateException dbUpdateException:
+                        statusCode = StatusCodes.Status422UnprocessableEntity;
+                        response = new
+                        {
+                            message = "Database update error."
                         };
                         break;
 
