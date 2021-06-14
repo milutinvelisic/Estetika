@@ -14,4 +14,10 @@ namespace Estetika.Domain
         public ICollection<JawJawSideTooth> JawJawSideTeeth { get; set; } = new HashSet<JawJawSideTooth>();
 
     }
+
+    public enum JawType
+    {
+        Upper,
+        Lower
+    }
 }

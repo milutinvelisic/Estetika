@@ -1,11 +1,9 @@
 ﻿using Estetika.Application;
 using Estetika.Application.Commands;
 using Estetika.Application.DataTransfer;
-using Estetika.Application.Exceptions;
 using Estetika.Application.Queries;
 using Estetika.Application.Searches;
 using Estetika.DataAccess;
-using Estetika.Domain;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,60 +16,56 @@ namespace Estetika.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RolesController : ControllerBase
+    public class ServiceTypeController : ControllerBase
     {
-
-        private readonly EstetikaContext _estetikaContext;
+        private readonly EstetikaContext context;
         private readonly IApplicationActor actor;
         private readonly UseCaseExecutor executor;
 
-        public RolesController(EstetikaContext estetikaContext, IApplicationActor actor, UseCaseExecutor executor)
+        public ServiceTypeController(EstetikaContext context, IApplicationActor actor, UseCaseExecutor executor)
         {
-            _estetikaContext = estetikaContext;
+            this.context = context;
             this.actor = actor;
             this.executor = executor;
         }
 
-
-        // GET: api/<RolesController>
+        // GET: api/<ServiceTypeController>
         [HttpGet]
-        public IActionResult Get([FromQuery] RoleSearch search, [FromServices] IGetRoleQuery query)
+        public IActionResult Get([FromQuery] ServiceTypeSearch search, [FromServices] IGetServiceTypeQuery query)
         {
             return Ok(executor.ExecuteQuery(query, search));
         }
 
-        // GET api/<RolesController>/5
+        // GET api/<ServiceTypeController>/5
         [HttpGet("{id}")]
-        public IActionResult Get([FromRoute]int id, [FromServices] IGetOneRoleQuery query)
+        public IActionResult Get([FromRoute] int id, [FromServices] IGetOneServiceTypeQuery query)
         {
             return Ok(executor.ExecuteQuery(query, id));
         }
 
-        // POST api/<RolesController>
+        // POST api/<ServiceTypeController>
         [HttpPost]
-        public IActionResult Post([FromBody] RoleDto dto, [FromServices] ICreateRoleCommand command)
+        public IActionResult Post([FromBody] ServiceTypeDto dto, [FromServices] ICreateServiceTypeCommand command)
         {
             executor.ExecuteCommand(command, dto);
             return NoContent();
         }
 
-        // PUT api/<RolesController>/5
+        // PUT api/<ServiceTypeController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] RoleDto dto, [FromServices] IUpdateRoleCommand command)
+        public IActionResult Put(int id, [FromBody] ServiceTypeDto dto, [FromServices] IUpdateServiceTypeCommand command)
         {
             dto.Id = id;
             executor.ExecuteCommand(command, dto);
             return NoContent();
         }
 
-        // DELETE api/<RolesController>/5
+        // DELETE api/<ServiceTypeController>/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id, [FromServices] IDeleteRoleCommand command)
+        public IActionResult Delete(int id, [FromServices] IDeleteServiceTypeCommand command)
         {
             executor.ExecuteCommand(command, id);
             return NoContent();
-
         }
     }
-
 }

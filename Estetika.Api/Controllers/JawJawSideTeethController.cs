@@ -1,8 +1,6 @@
 ﻿using Estetika.Application;
 using Estetika.Application.Commands;
 using Estetika.Application.DataTransfer;
-using Estetika.Application.Queries;
-using Estetika.Application.Searches;
 using Estetika.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,56 +14,55 @@ namespace Estetika.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DentistsController : ControllerBase
+    public class JawJawSideTeethController : ControllerBase
     {
         private readonly EstetikaContext context;
         private readonly IApplicationActor actor;
         private readonly UseCaseExecutor executor;
 
-        public DentistsController(EstetikaContext context, IApplicationActor actor, UseCaseExecutor executor)
+        public JawJawSideTeethController(EstetikaContext context, IApplicationActor actor, UseCaseExecutor executor)
         {
             this.context = context;
             this.actor = actor;
             this.executor = executor;
         }
 
-        // GET: api/<DentistsController>
+
+        // GET: api/<JawJawSideTeethController>
         [HttpGet]
-        public IActionResult Get([FromQuery] DentistSearch search, [FromServices] IGetDentistQuery query)
+        public IEnumerable<string> Get()
         {
-            return Ok(executor.ExecuteQuery(query, search));
+            return new string[] { "value1", "value2" };
         }
 
-        // GET api/<DentistsController>/5
+        // GET api/<JawJawSideTeethController>/5
         [HttpGet("{id}")]
-        public IActionResult Get([FromRoute] int id, [FromServices] IGetOneDentistQuery query)
+        public string Get(int id)
         {
-            return Ok(executor.ExecuteQuery(query, id));
+            return "value";
         }
 
-        // POST api/<DentistsController>
+        // POST api/<JawJawSideTeethController>
         [HttpPost]
-        public IActionResult Post([FromBody] DentistDto dto, [FromServices] ICreateDentistCommand command)
+        public IActionResult Post([FromBody] JawJawSideTeethDto dto, [FromServices] ICreateJawJawSideTeethCommand command)
         {
             executor.ExecuteCommand(command, dto);
             return NoContent();
         }
 
-        // PUT api/<DentistsController>/5
+        // PUT api/<JawJawSideTeethController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] DentistDto dto, [FromServices] IUpdateDentistCommand command)
+        public IActionResult Put(int id, [FromBody] JawJawSideTeethDto dto, [FromServices] IUpdateJawJawSideTeethCommand command)
         {
             dto.Id = id;
             executor.ExecuteCommand(command, dto);
             return NoContent();
         }
 
-        // DELETE api/<DentistsController>/5
+        // DELETE api/<JawJawSideTeethController>/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id, [FromServices] IDeleteDentistCommand command)
+        public void Delete(int id)
         {
-            executor.ExecuteCommand(command, id);
-            return NoContent();
         }
     }
 }

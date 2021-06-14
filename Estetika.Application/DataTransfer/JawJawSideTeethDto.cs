@@ -6,17 +6,11 @@ using System.Threading.Tasks;
 
 namespace Estetika.Application.DataTransfer
 {
-    public class JawDto
+    public class JawJawSideTeethDto
     {
         public int Id { get; set; }
-
-        public string JawName { get; set; }
-
-        public JawType JawType { get; set; }
-    }
-
-    public enum JawType {
-        Upper,
-        Lower
+        public int JawId { get; set; }
+        public int JawSideId { get; set; }
+        public int ToothId { get; set; }
     }
 }

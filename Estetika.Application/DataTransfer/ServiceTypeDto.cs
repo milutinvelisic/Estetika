@@ -6,17 +6,14 @@ using System.Threading.Tasks;
 
 namespace Estetika.Application.DataTransfer
 {
-    public class JawDto
+    public class ServiceTypeDto
     {
         public int Id { get; set; }
 
-        public string JawName { get; set; }
+        public string ServiceName { get; set; }
 
-        public JawType JawType { get; set; }
-    }
+        public string ServiceDescription { get; set; }
 
-    public enum JawType {
-        Upper,
-        Lower
+        public decimal ServicePrice { get; set; }
     }
 }
