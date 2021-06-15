@@ -1,6 +1,7 @@
 ﻿using Estetika.Application.DataTransfer;
 using Estetika.DataAccess;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +18,21 @@ namespace Estetika.Implementation.Validators
             this.context = context;
 
             RuleFor(x => x.JawId).Must(JawExists).WithMessage("Jaw with id of {PropertyValue} doesn't exists.")
-                .Must(JawIdCount).WithMessage("Jaw cannot be inserted more then 16 times.");
-            RuleFor(x => x.JawSideId).Must(JawSideExists).WithMessage("JawSide with id of {PropertyValue} doesn't exists.")
-                .Must(JawSideIdCount).WithMessage("JawSide cannot be inserted more then 16 times.");
-            RuleFor(x => x.ToothId).Must(TeethExists).WithMessage("Tooth with id of {PropertyValue} doesn't exists.")
-                .Must(ToothIdCount).WithMessage("Teeth cannot be inserted more then 8 times.");
+                .DependentRules(() =>
+                {
+                    RuleFor(x => x.ToothId).Must(TeethExists).WithMessage("Tooth with id of {PropertyValue} doesn't exists.")
+
+                    .DependentRules(() =>
+                    {
+                        RuleFor(x => x.ToothId).Must(ToothIsAlreadyOnThisSide).WithMessage("ToothIsAlreadyOnThisSide")
+
+                        .DependentRules(() =>
+                        {
+                            RuleFor(x => x.JawSideId).Must(JawSideIsNotPopulated).WithMessage("");
+                        });
+                    });
+                });
+           
         }
 
         private bool JawExists(int jawId)
@@ -29,10 +40,11 @@ namespace Estetika.Implementation.Validators
             return context.Jaws.Any(x => x.Id == jawId);
         }
 
-        private bool JawIdCount(int jawId)
-        {
-            return context.Jaws.Where(x => x.Id == jawId).Count() > 16;
-        }
+        //private bool JawIdCount(JawJawSideTeethDto dto, int jawId)
+        //{
+
+        //    //return context.JawJawSideTeeth.Where(x => x.JawId == jawId && dto.ToothId != x.ToothId).Count() > 16;
+        //}
 
         private bool JawSideExists(int JawSideId)
         {
@@ -41,7 +53,7 @@ namespace Estetika.Implementation.Validators
 
         private bool JawSideIdCount(int JawSideId)
         {
-            return context.JawSides.Where(x => x.Id == JawSideId).Count() > 16;
+            return context.JawJawSideTeeth.Where(x => x.JawSideId == JawSideId).Count() > 16;
         }
 
         private bool TeethExists(int ToothId)
@@ -51,7 +63,17 @@ namespace Estetika.Implementation.Validators
 
         private bool ToothIdCount(int ToothId)
         {
-            return context.Teeths.Where(x => x.Id == ToothId).Count() > 16;
+            return context.JawJawSideTeeth.Where(x => x.ToothId == ToothId).Count() > 16;
+        }
+
+        private bool ToothIsAlreadyOnThisSide(JawJawSideTeethDto dto, int ToothId)
+        {
+            return context.JawJawSideTeeth.Where(x => x.ToothId == ToothId && x.JawSideId == dto.JawSideId).Any();
+        }
+
+        private bool JawSideIsNotPopulated(int JawSideId)
+        {
+            return context.JawSides.Include(x => x.JawJawSideTeeth).FirstOrDefault(x => x.Id == JawSideId).JawJawSideTeeth.Count() < 16;
         }
     }
 }
