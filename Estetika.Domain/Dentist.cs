@@ -13,5 +13,7 @@ namespace Estetika.Domain
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public virtual ICollection<EKarton> EKarton { get; set; } = new HashSet<EKarton>();
     }
 }

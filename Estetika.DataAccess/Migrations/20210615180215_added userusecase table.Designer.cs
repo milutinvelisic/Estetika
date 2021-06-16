@@ -4,14 +4,16 @@ using Estetika.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Estetika.DataAccess.Migrations
 {
     [DbContext(typeof(EstetikaContext))]
-    partial class EstetikaContextModelSnapshot : ModelSnapshot
+    [Migration("20210615180215_added userusecase table")]
+    partial class addeduserusecasetable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,9 +167,6 @@ namespace Estetika.DataAccess.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DentistId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -190,8 +189,6 @@ namespace Estetika.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DentistId");
 
                     b.HasIndex("JawJawSideToothId");
 
@@ -528,12 +525,6 @@ namespace Estetika.DataAccess.Migrations
 
             modelBuilder.Entity("Estetika.Domain.EKarton", b =>
                 {
-                    b.HasOne("Estetika.Domain.Dentist", "Dentist")
-                        .WithMany("EKarton")
-                        .HasForeignKey("DentistId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Estetika.Domain.JawJawSideTooth", "JawJawSideTooth")
                         .WithMany("EKarton")
                         .HasForeignKey("JawJawSideToothId")
@@ -551,8 +542,6 @@ namespace Estetika.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Dentist");
 
                     b.Navigation("JawJawSideTooth");
 
@@ -607,11 +596,6 @@ namespace Estetika.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Estetika.Domain.Dentist", b =>
-                {
-                    b.Navigation("EKarton");
                 });
 
             modelBuilder.Entity("Estetika.Domain.Jaw", b =>

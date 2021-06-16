@@ -6,6 +6,7 @@ using Estetika.Application.Queries;
 using Estetika.Application.Searches;
 using Estetika.DataAccess;
 using Estetika.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace Estetika.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RolesController : ControllerBase

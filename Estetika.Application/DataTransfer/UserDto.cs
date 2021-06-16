@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Estetika.Domain
+namespace Estetika.Application.DataTransfer
 {
-    public class User : EntityBase
+    public class UserDto
     {
         public int Id { get; set; }
 
@@ -20,11 +20,6 @@ namespace Estetika.Domain
 
         public string Phone { get; set; }
 
-        public int? RoleId { get; set; }
-
-        public virtual Role Role { get; set; }
-
-        public virtual ICollection<EKarton> EKartons { get; set; } = new HashSet<EKarton>();
-        public virtual ICollection<UserUseCases> UserUseCases { get; set; }
+        public int RoleId { get; set; }
     }
 }

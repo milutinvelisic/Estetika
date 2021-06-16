@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Estetika.Application.DataTransfer
 {
-    public class EKartonDto
+    public class EkartonDto
     {
         public int Id { get; set; }
 
@@ -19,5 +19,7 @@ namespace Estetika.Application.DataTransfer
         public int JawJawSideToothId { get; set; }
 
         public int UserId { get; set; }
+
+        public int DentistId { get; set; }
     }
 }

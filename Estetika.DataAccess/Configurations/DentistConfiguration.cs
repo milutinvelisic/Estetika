@@ -15,6 +15,8 @@ namespace Estetika.DataAccess.Configurations
         {
             builder.Property(x => x.FirstName).IsRequired().HasMaxLength(30);
             builder.Property(x => x.LastName).IsRequired().HasMaxLength(30);
+
+            builder.HasMany(x => x.EKarton).WithOne(x => x.Dentist).HasForeignKey(x => x.DentistId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

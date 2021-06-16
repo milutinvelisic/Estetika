@@ -1,5 +1,6 @@
 ﻿using Estetika.Application.Commands;
 using Estetika.Application.DataTransfer;
+using Estetika.Application.Email;
 using Estetika.DataAccess;
 using Estetika.Domain;
 using Estetika.Implementation.Validators;
@@ -16,11 +17,13 @@ namespace Estetika.Implementation.Commands
     {
         private readonly EstetikaContext _context;
         private readonly CreateAppointmentValidator validator;
+        private readonly IEmailSender _sender;
 
-        public EfCreateAppointmentCommand(EstetikaContext context, CreateAppointmentValidator validator)
+        public EfCreateAppointmentCommand(EstetikaContext context, CreateAppointmentValidator validator, IEmailSender sender)
         {
             _context = context;
             this.validator = validator;
+            this._sender = sender;
         }
 
         public int Id => 25;
@@ -43,6 +46,13 @@ namespace Estetika.Implementation.Commands
 
             _context.Appointments.Add(appointment);
             _context.SaveChanges();
+
+            _sender.Send(new SendEmailDto
+            {
+                Content = $"<h1>Successfull Created  Appointment for user {request.FirstNameLastName} with date {request.Date}!</h1>",
+                SendTo = request.Email,
+                Subject = "Appointment"
+            });
         }
     }
 }

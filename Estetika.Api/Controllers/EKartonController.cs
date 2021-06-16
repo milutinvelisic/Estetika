@@ -1,8 +1,6 @@
 ﻿using Estetika.Application;
 using Estetika.Application.Commands;
 using Estetika.Application.DataTransfer;
-using Estetika.Application.Queries;
-using Estetika.Application.Searches;
 using Estetika.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,56 +14,54 @@ namespace Estetika.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class EKartonController : ControllerBase
     {
         private readonly EstetikaContext context;
         private readonly IApplicationActor actor;
         private readonly UseCaseExecutor executor;
 
-        public UsersController(EstetikaContext context, IApplicationActor actor, UseCaseExecutor executor)
+        public EKartonController(EstetikaContext context, IApplicationActor actor, UseCaseExecutor executor)
         {
             this.context = context;
             this.actor = actor;
             this.executor = executor;
         }
 
-        // GET: api/<UsersController>
+        // GET: api/<EKartonController>
         [HttpGet]
-        public IActionResult Get([FromQuery] UserSearch search, [FromServices] IGetUsersQuery query)
+        public IEnumerable<string> Get()
         {
-            return Ok(executor.ExecuteQuery(query, search));
+            return new string[] { "value1", "value2" };
         }
 
-        // GET api/<UsersController>/5
+        // GET api/<EKartonController>/5
         [HttpGet("{id}")]
-        public IActionResult Get([FromRoute] int id, [FromServices] IGetOneDentistQuery query)
+        public string Get(int id)
         {
-            return Ok(executor.ExecuteQuery(query, id));
+            return "value";
         }
 
-        // POST api/<UsersController>
+        // POST api/<EKartonController>
         [HttpPost]
-        public IActionResult Post([FromBody] UserDto dto, [FromServices] ICreateUserCommand command)
+        public IActionResult Post([FromBody] EkartonDto dto, [FromServices] ICreateEKartonCommand command)
         {
             executor.ExecuteCommand(command, dto);
             return NoContent();
         }
 
-        // PUT api/<UsersController>/5
+        // PUT api/<EKartonController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UserDto dto, [FromServices] IUpdateUserCommand command)
+        public IActionResult Put(int id, [FromBody] EkartonDto dto, [FromServices] IUpdateEKartonCommand command)
         {
             dto.Id = id;
             executor.ExecuteCommand(command, dto);
             return NoContent();
         }
 
-        // DELETE api/<UsersController>/5
+        // DELETE api/<EKartonController>/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id, [FromServices] IDeleteUserCommand command)
+        public void Delete(int id)
         {
-            executor.ExecuteCommand(command, id);
-            return NoContent();
         }
     }
 }

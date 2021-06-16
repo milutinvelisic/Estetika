@@ -25,5 +25,8 @@ namespace Estetika.Domain
 
         public User User { get; set; }
 
+        public Dentist Dentist { get; set; }
+        public int DentistId { get; set; }
+
     }
 }

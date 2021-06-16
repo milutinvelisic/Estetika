@@ -82,5 +82,6 @@ namespace Estetika.DataAccess
         public DbSet<ServiceType> ServiceTypes { get; set; }
         public DbSet<Teeth> Teeths { get; set; }
         public DbSet<UseCaseLog> UseCaseLog { get; set; }
+        public DbSet<UserUseCases> UserUseCases { get; set; }
     }
 }
