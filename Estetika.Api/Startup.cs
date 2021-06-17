@@ -62,6 +62,7 @@ namespace Estetika.Api
             services.AddTransient<IDeleteJawSideCommand, EfDeleteJawSideCommand>();
             services.AddTransient<IDeleteServiceTypeCommand, EfDeleteServiceTypeCommand>();
             services.AddTransient<IDeleteUserCommand, EfDeleteUserCommand>();
+            services.AddTransient<IDeleteEKartonCommand, EfDeleteEKartonCommand>();
 
             services.AddTransient<IUpdateRoleCommand, EfUpdateRoleCommand>();
             services.AddTransient<IUpdateDentistCommand, EfUpdateDentistCommand>();
@@ -77,12 +78,16 @@ namespace Estetika.Api
             services.AddTransient<IGetServiceTypeQuery, EfGetServiceTypeQuery>();
             services.AddTransient<IGetDentistQuery, EfGetDentistQuery>();
             services.AddTransient<IGetUsersQuery, EfGetUsersQuery>();
+            services.AddTransient<IGetEKartonQuery, EfGetEKartonQuery>();
+            services.AddTransient<IGetUseCaseLogQuery, EfGetUseCaseLogQuery>();
+            services.AddTransient<IGetAppointmentQuery, EfGetAppointmentQuery>();
 
 
             services.AddTransient<IGetOneRoleQuery, EfGetOneRoleQuery>();
             services.AddTransient<IGetOneServiceTypeQuery, EfGetOneServiceTypeQuery>();
             services.AddTransient<IGetOneDentistQuery, EfGetOneDentistQuery>();
             services.AddTransient<IGetOneUserQuery, EfGetOneUserQuery>();
+            services.AddTransient<IGetOneEKartonQuery, EfGetOneEKartonQuery>();
 
             services.AddHttpContextAccessor();
             services.AddTransient<IApplicationActor>(x => {

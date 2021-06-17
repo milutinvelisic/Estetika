@@ -1,6 +1,8 @@
 ﻿using Estetika.Application;
 using Estetika.Application.Commands;
 using Estetika.Application.DataTransfer;
+using Estetika.Application.Queries;
+using Estetika.Application.Searches;
 using Estetika.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -29,16 +31,16 @@ namespace Estetika.Api.Controllers
 
         // GET: api/<EKartonController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get([FromQuery] EKartonSearch search, [FromServices] IGetEKartonQuery query)
         {
-            return new string[] { "value1", "value2" };
+            return Ok(executor.ExecuteQuery(query, search));
         }
 
         // GET api/<EKartonController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get([FromRoute] int id, [FromServices] IGetOneEKartonQuery query)
         {
-            return "value";
+            return Ok(executor.ExecuteQuery(query, id));
         }
 
         // POST api/<EKartonController>
@@ -60,8 +62,10 @@ namespace Estetika.Api.Controllers
 
         // DELETE api/<EKartonController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id, [FromServices] IDeleteEKartonCommand command)
         {
+            executor.ExecuteCommand(command, id);
+            return NoContent();
         }
     }
 }

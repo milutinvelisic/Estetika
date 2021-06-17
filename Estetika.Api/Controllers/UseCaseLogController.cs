@@ -1,6 +1,4 @@
 ﻿using Estetika.Application;
-using Estetika.Application.Commands;
-using Estetika.Application.DataTransfer;
 using Estetika.Application.Queries;
 using Estetika.Application.Searches;
 using Estetika.DataAccess;
@@ -16,32 +14,24 @@ namespace Estetika.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AppointmentsController : ControllerBase
+    public class UseCaseLogController : ControllerBase
     {
         private readonly EstetikaContext context;
         private readonly IApplicationActor actor;
         private readonly UseCaseExecutor executor;
 
-        public AppointmentsController(EstetikaContext context, IApplicationActor actor, UseCaseExecutor executor)
+        public UseCaseLogController(EstetikaContext context, IApplicationActor actor, UseCaseExecutor executor)
         {
             this.context = context;
             this.actor = actor;
             this.executor = executor;
         }
 
-        // GET: api/<AppointmentsController>
+        // GET: api/<UseCaseLogController>
         [HttpGet]
-        public IActionResult Get([FromQuery] AppointmentSearch search, [FromServices] IGetAppointmentQuery query)
+        public IActionResult Get([FromQuery] UseCaseSearchSearch search, [FromServices] IGetUseCaseLogQuery query)
         {
             return Ok(executor.ExecuteQuery(query, search));
-        }
-
-        // POST api/<AppointmentsController>
-        [HttpPost]
-        public IActionResult Post([FromBody] AppointmentDto dto, [FromServices] ICreateAppointmentCommand command)
-        {
-            executor.ExecuteCommand(command, dto);
-            return NoContent();
         }
     }
 }

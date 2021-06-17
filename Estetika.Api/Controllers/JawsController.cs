@@ -27,20 +27,6 @@ namespace Estetika.Api.Controllers
             this.executor = executor;
         }
 
-        // GET: api/<JawsController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<JawsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/<JawsController>
         [HttpPost]
         public IActionResult Post([FromBody] JawDto dto, [FromServices] ICreateJawCommand command)

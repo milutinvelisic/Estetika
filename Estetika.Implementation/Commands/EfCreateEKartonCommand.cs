@@ -38,7 +38,7 @@ namespace Estetika.Implementation.Commands
                 Price = request.Price,
                 JawJawSideToothId = request.JawJawSideToothId,
                 UserId = request.UserId,
-                DentistId = request.DentistId,
+                DentistId = request.DentistId
             };
 
             _context.EKartons.Add(ekarton);

@@ -27,21 +27,6 @@ namespace Estetika.Api.Controllers
             this.executor = executor;
         }
 
-
-        // GET: api/<JawJawSideTeethController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<JawJawSideTeethController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/<JawJawSideTeethController>
         [HttpPost]
         public IActionResult Post([FromBody] JawJawSideTeethDto dto, [FromServices] ICreateJawJawSideTeethCommand command)
@@ -57,12 +42,6 @@ namespace Estetika.Api.Controllers
             dto.Id = id;
             executor.ExecuteCommand(command, dto);
             return NoContent();
-        }
-
-        // DELETE api/<JawJawSideTeethController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
